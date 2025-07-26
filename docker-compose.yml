@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:17.5
+    container_name: morphius_postgres
+    environment:
+      POSTGRES_DB: morphius
+      POSTGRES_USER: morphius_user
+      POSTGRES_PASSWORD: morphius_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+volumes:
+  postgres_data:
