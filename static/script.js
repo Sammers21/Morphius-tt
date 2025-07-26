@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function connectWebSocket() {
-        const socket = new WebSocket('ws://localhost:3000/ws');
+        const socket = new WebSocket(`ws://${window.location.host}/ws`);
         socket.addEventListener('message', function (event) {
             try {
                 const data = JSON.parse(event.data);
