@@ -19,5 +19,6 @@ services:
     depends_on:
       - postgres
     command: ["--api-key", "${API_KEY}", "--pg-url", "postgresql://morphius_user:morphius_password@postgres:5432/morphius?sslmode=disable"]
+    tty: true
 volumes:
   postgres_data:
