@@ -91,6 +91,7 @@ async fn handle_socket<T: DB>(
     db: T,
     price_sender: broadcast::Sender<PriceData>,
 ) {
+    info!("New websocket connection established");
     let data = db.fetch_all().await;
     for price_data in data {
         match serde_json::to_string(&price_data) {
