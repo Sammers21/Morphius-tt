@@ -6,7 +6,7 @@ edition = "2024"
 [dependencies]
 axum = { version = "0.7.9", features = ["ws"] }
 tokio = { version = "1.46.1", features = ["full"] }
-tower-http = { version = "0.5.0", features = ["fs"] }
+tower-http = { version = "0.5.0", features = ["fs", "set-header"] }
 rand = "0.8.5"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
@@ -14,3 +14,5 @@ reqwest = { version = "0.12", features = ["json"] }
 scraper = "0.20"
 sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "postgres", "chrono"] }
 chrono = { version = "0.4", features = ["serde"] }
+log = "0.4"
+env_logger = "0.11"

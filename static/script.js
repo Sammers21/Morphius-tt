@@ -1,15 +1,8 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // DOM elements
-    const connectionStatus = document.getElementById('connection-status');
+document.addEventListener('DOMContentLoaded', function () {
     const priceDisplay = document.getElementById('price-display');
     const ctx = document.getElementById('priceChart').getContext('2d');
-    
-    // Data arrays for the chart
     const timestamps = [];
     const prices = [];
-    const maxDataPoints = 60; // Show 1 minute of data
-    
-    // Initialize Chart.js
     const chart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -21,7 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 backgroundColor: 'rgba(75, 192, 192, 0.1)',
                 borderWidth: 2,
                 tension: 0.3,
-                fill: true
+                fill: true,
+                pointRadius: 2,
+                pointHoverRadius: 4
             }]
         },
         options: {
@@ -41,73 +36,39 @@ document.addEventListener('DOMContentLoaded', function() {
                         display: true,
                         text: 'Price (USD)'
                     },
-                    suggestedMin: 90000,
-                    suggestedMax: 110000
                 }
             },
             animation: {
-                duration: 0 // Disable animation for better performance
+                duration: 0
             }
         }
     });
-    
-    // Format price for display
+
     function formatPrice(price) {
-        return '$' + price.toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
+        if (price === null || price === undefined || isNaN(price)) {
+            return '$0.00';
+        }
+        return '$' + price;
     }
-    
-    // Format timestamp for display
+
     function formatTimestamp(timestamp) {
         const date = new Date(timestamp * 1000);
         return date.toLocaleTimeString();
     }
-    
-    // Update chart with new data
+
     function updateChart(price, timestamp) {
-        // Add new data
+        if (price === null || price === undefined || timestamp === null || timestamp === undefined) {
+            return;
+        }
         timestamps.push(formatTimestamp(timestamp));
         prices.push(price);
-        
-        // Remove old data if we have more than maxDataPoints
-        if (timestamps.length > maxDataPoints) {
-            timestamps.shift();
-            prices.shift();
-        }
-        
-        // Update chart
         chart.update();
-        
-        // Update price display
         priceDisplay.textContent = formatPrice(price);
     }
-    
-    // Connect to WebSocket
+
     function connectWebSocket() {
-        // Create WebSocket connection
-        const socket = new WebSocket('ws://127.0.0.1:3000/ws');
-        
-        // Connection opened
-        socket.addEventListener('open', function(event) {
-            connectionStatus.textContent = 'Connected';
-            connectionStatus.classList.remove('disconnected');
-            connectionStatus.classList.add('connected');
-        });
-        
-        // Connection closed
-        socket.addEventListener('close', function(event) {
-            connectionStatus.textContent = 'Disconnected - Reconnecting...';
-            connectionStatus.classList.remove('connected');
-            connectionStatus.classList.add('disconnected');
-            
-            // Try to reconnect after 1 second
-            setTimeout(connectWebSocket, 1000);
-        });
-        
-        // Listen for messages
-        socket.addEventListener('message', function(event) {
+        const socket = new WebSocket('ws://localhost:3000/ws');
+        socket.addEventListener('message', function (event) {
             try {
                 const data = JSON.parse(event.data);
                 updateChart(data.price, data.timestamp);
@@ -115,14 +76,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error parsing message:', error);
             }
         });
-        
-        // Connection error
-        socket.addEventListener('error', function(event) {
+        socket.addEventListener('close', function () {
+            console.log('WebSocket closed');
+        });
+        socket.addEventListener('error', function (event) {
             console.error('WebSocket error:', event);
             socket.close();
         });
     }
-    
-    // Start the WebSocket connection
+
     connectWebSocket();
 });

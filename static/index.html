@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitcoin Price Simulator</title>
+    <title>BTC Price in $</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -35,32 +35,16 @@
             margin: 20px 0;
             font-weight: bold;
         }
-        .connection-status {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 10px;
-            border-radius: 4px;
-        }
-        .connected {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        .disconnected {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Bitcoin Price Simulator</h1>
-        <div id="connection-status" class="connection-status disconnected">Disconnected</div>
         <div id="price-display" class="price-display">$0.00</div>
         <div class="chart-container">
             <canvas id="priceChart"></canvas>
         </div>
     </div>
-    
     <script src="script.js"></script>
 </body>
 </html>

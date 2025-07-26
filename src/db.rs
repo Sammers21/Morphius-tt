@@ -1,9 +1,9 @@
 use crate::coingecko::PriceData;
+use chrono::{DateTime, Utc};
 use sqlx::{Pool, Postgres, Row};
 use std::future::Future;
 use std::sync::Arc;
 use tokio::sync::RwLock;
-use chrono::{DateTime, Utc};
 
 pub trait DB: Clone + Send + Sync + 'static {
     fn insert(&self, data: PriceData) -> impl Future<Output = Result<(), String>> + Send;
@@ -74,7 +74,7 @@ impl PostgresDB {
             r#"
             CREATE TABLE IF NOT EXISTS btc_prices (
                 id SERIAL PRIMARY KEY,
-                price DECIMAL(20, 8) NOT NULL,
+                price DOUBLE PRECISION NOT NULL,
                 timestamp TIMESTAMPTZ NOT NULL
             )
             "#,
@@ -89,26 +89,26 @@ impl DB for PostgresDB {
     fn insert(&self, data: PriceData) -> impl Future<Output = Result<(), String>> + Send {
         let pool = self.pool.clone();
         async move {
-            let timestamp = DateTime::from_timestamp(data.timestamp, 0)
-                .unwrap_or_else(|| Utc::now());
-            sqlx::query(
-                "INSERT INTO btc_prices (price, timestamp) VALUES ($1, $2)"
-            )
-            .bind(data.price)
-            .bind(timestamp)
-            .execute(&pool)
-            .await
-            .map_err(|e| e.to_string())?;
+            let timestamp =
+                DateTime::from_timestamp(data.timestamp, 0).unwrap_or_else(|| Utc::now());
+            sqlx::query("INSERT INTO btc_prices (price, timestamp) VALUES ($1, $2)")
+                .bind(data.price)
+                .bind(timestamp)
+                .execute(&pool)
+                .await
+                .map_err(|e| e.to_string())?;
             Ok(())
         }
     }
+
     fn fetch_all(&self) -> impl Future<Output = Vec<PriceData>> + Send {
         let pool = self.pool.clone();
         async move {
-            let rows = sqlx::query("SELECT price, timestamp FROM btc_prices ORDER BY timestamp DESC")
-                .fetch_all(&pool)
-                .await
-                .unwrap_or_default();
+            let rows =
+                sqlx::query("SELECT price, timestamp FROM btc_prices ORDER BY timestamp ASC")
+                    .fetch_all(&pool)
+                    .await
+                    .unwrap_or_default();
             rows.into_iter()
                 .map(|row| {
                     let timestamp_dt: DateTime<Utc> = row.get("timestamp");
