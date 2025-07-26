@@ -14,5 +14,15 @@ doesn't need to look nice. No AI shit code
 
 ## Results
 
+Demo live: http://31.220.74.111:3000/
+
 <img width="2331" height="1398" alt="image" src="https://github.com/user-attachments/assets/d775b1a9-4515-4257-917b-1c9778ff38c1" />
 
+Highlights of the implementation:
+
+* The app stores data in memory (for speed) using a BTreeMap while also persisting it in a PostgreSQL database
+* Space-efficient data storage strategy:
+  * 60 points for each second for the last minute
+  * 60 points for each minute for the last hour
+  * 24 points for each hour for the last day
+  * 1 point per day for older data
