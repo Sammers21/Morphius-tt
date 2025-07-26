@@ -29,20 +29,51 @@
             height: 400px;
             margin-top: 20px;
         }
-        .price-display {
-            font-size: 24px;
-            text-align: center;
+        .info-panel {
+            display: flex;
+            justify-content: space-around;
             margin: 20px 0;
+            gap: 20px;
+        }
+        .info-item {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #007bff;
+            flex: 1;
+            text-align: center;
+        }
+        .info-label {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            font-size: 18px;
             font-weight: bold;
+            color: #333;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Bitcoin Price Simulator</h1>
-        <div id="price-display" class="price-display">$0.00</div>
+        <h1 class="display">Bitcoin Price graph</h1>
+        <div class="info-panel">
+            <div class="info-item">
+                <div class="info-label">Points Count</div>
+                <div class="info-value" id="points-count">0</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Latest Price</div>
+                <div class="info-value" id="latest-price">$0.00</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Latest Time</div>
+                <div class="info-value" id="latest-time">--:--:--</div>
+            </div>
+        </div>
         <div class="chart-container">
-            <canvas id="priceChart"></canvas>
+            <canvas id="chart"></canvas>
         </div>
     </div>
     <script src="script.js"></script>

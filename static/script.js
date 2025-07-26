@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const priceDisplay = document.getElementById('price-display');
-    const ctx = document.getElementById('priceChart').getContext('2d');
+    const ctx = document.getElementById('chart').getContext('2d');
+    const pointsCountDisplay = document.getElementById('points-count');
+    const latestPriceDisplay = document.getElementById('latest-price');
+    const latestTimeDisplay = document.getElementById('latest-time');
     const timestamps = [];
     const prices = [];
     const chart = new Chart(ctx, {
@@ -60,10 +62,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (price === null || price === undefined || timestamp === null || timestamp === undefined) {
             return;
         }
-        timestamps.push(formatTimestamp(timestamp));
+        let tsFormatted = formatTimestamp(timestamp);
+        timestamps.push(tsFormatted);
         prices.push(price);
         chart.update();
-        priceDisplay.textContent = formatPrice(price);
+        pointsCountDisplay.textContent = prices.length;
+        latestPriceDisplay.textContent = formatPrice(price);
+        latestTimeDisplay.textContent = tsFormatted;
     }
 
     function connectWebSocket() {

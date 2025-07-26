@@ -11,5 +11,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
+  morphius-app:
+    build: .
+    container_name: morphius_app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    command: ["--api-key", "${API_KEY}", "--pg-url", "postgresql://morphius_user:morphius_password@postgres:5432/morphius?sslmode=disable"]
 volumes:
   postgres_data:
