@@ -26,6 +26,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         .filter_level(log::LevelFilter::Info)
         .init();
     let args = Args::parse();
+    log::info!("API key: {}", args.api_key);
+    log::info!("PostgreSQL connection URL: {}", args.pg_url);
     let api = coingecko::API::new(args.api_key);
     let db = CleanupDB::new(CachingDB::new(PostgresDB::new(&args.pg_url).await?));
     server::Server::new(api, db, 3000).start().await?;
