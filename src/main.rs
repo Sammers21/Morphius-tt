@@ -1,13 +1,13 @@
+mod caching;
+mod cleanup;
 mod coingecko;
 mod db;
-mod server;
-mod caching;
 mod postgres;
-mod cleanup;
+mod server;
 
 use crate::caching::CachingDB;
-use crate::postgres::PostgresDB;
 use crate::cleanup::CleanupDB;
+use crate::postgres::PostgresDB;
 use clap::Parser;
 
 #[derive(Parser)]
@@ -25,7 +25,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     env_logger::Builder::from_default_env()
         .filter_level(log::LevelFilter::Info)
         .init();
-    let args = Args::parse();
+    let args = match Args::try_parse() {
+        Ok(args) => args,
+        Err(e) => {
+            log::error!("{}", e);
+            std::process::exit(1);
+        }
+    };
     log::info!("API key: {}", args.api_key);
     log::info!("PostgreSQL connection URL: {}", args.pg_url);
     let api = coingecko::API::new(args.api_key);
