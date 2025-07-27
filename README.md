@@ -16,7 +16,7 @@ doesn't need to look nice. No AI shit code
 
 Demo live: http://31.220.74.111:3000/
 
-<img width="2331" height="1398" alt="image" src="https://github.com/user-attachments/assets/d775b1a9-4515-4257-917b-1c9778ff38c1" />
+<img width="1072" height="649" alt="image" src="https://github.com/user-attachments/assets/4681711a-d4dc-404d-ab2e-5fc3daf2b0e8" />
 
 Highlights of the implementation:
 
