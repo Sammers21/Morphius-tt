@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             maintainAspectRatio: false,
             scales: {
                 x: {
+                    type: "time",
                     display: true,
                     title: {
                         display: true,
@@ -63,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
         let tsFormatted = formatTimestamp(timestamp);
-        timestamps.push(tsFormatted);
+        timestamps.push(new Date(timestamp * 1000));
         prices.push(price);
         chart.update();
         pointsCountDisplay.textContent = prices.length;
