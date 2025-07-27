@@ -31,6 +31,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     title: {
                         display: true,
                         text: 'Time'
+                    },
+                    time: {
+                        displayFormats: {
+                            second: 'HH:mm:ss',
+                            minute: 'HH:mm',
+                            hour: 'HH:mm',
+                            day: 'MMM DD',
+                            week: 'MMM DD',
+                            month: 'MMM YYYY',
+                            quarter: 'MMM YYYY',
+                            year: 'YYYY'
+                        }
                     }
                 },
                 y: {
