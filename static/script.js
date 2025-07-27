@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
             maintainAspectRatio: false,
             scales: {
                 x: {
-                    type: 'linear', // Ensures the x-axis is linear
                     display: true,
                     title: {
                         display: true,
